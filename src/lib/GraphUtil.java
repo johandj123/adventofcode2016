@@ -46,6 +46,27 @@ public class GraphUtil {
         throw new IllegalStateException("End not found");
     }
 
+    public static <T> Set<T> breadthFirstSearch(T start, Function<T, Iterable<T>> neighbours, int steps) {
+        Set<T> explored = new HashSet<>();
+        Set<T> current = new HashSet<>(List.of(start));
+        int counter = 0;
+        while (counter < steps) {
+            explored.addAll(current);
+            Set<T> next = new HashSet<>();
+            for (T node : current) {
+                for (T nextNode : neighbours.apply(node)) {
+                    if (!explored.contains(nextNode)) {
+                        next.add(nextNode);
+                    }
+                }
+            }
+            counter++;
+            current = next;
+        }
+        explored.addAll(current);
+        return explored;
+    }
+
     public static <T extends Comparable<T>> int dijkstra(T start, Function<T, Map<T, Integer>> neighbours, Predicate<T> endPredicate) {
         Map<T, Integer> distances = new HashMap<>();
         SortedSet<DijkstraNodeDistance<T>> queue = new TreeSet<>(List.of(new DijkstraNodeDistance<T>(0, start)));
