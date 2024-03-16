@@ -38,4 +38,12 @@ public class InputUtil {
         String[] parts = input.trim().split("\\s+");
         return Arrays.stream(parts).map(Long::parseLong).collect(Collectors.toList());
     }
+
+    public static List<Integer> extractPositiveIntegers(String input) {
+        String[] parts = input.split("\\D");
+        return Arrays.stream(parts)
+                .filter(s -> !s.isBlank())
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+    }
 }
