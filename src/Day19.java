@@ -5,6 +5,8 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Day19 {
     public static void main(String[] args) throws IOException {
@@ -23,23 +25,17 @@ public class Day19 {
     }
 
     private static void second(int input) {
-        Deque<Integer> left = new ArrayDeque<>();
-        Deque<Integer> right = new ArrayDeque<>();
-        for (int i = 1; i <= input / 2; i++) {
-            left.addLast(i);
-        }
-        for (int i = (input / 2) + 1; i <= input; i++) {
-            right.addFirst(i);
-        }
+        Deque<Integer> left = IntStream.rangeClosed(1, input / 2).boxed().collect(Collectors.toCollection(ArrayDeque::new));
+        Deque<Integer> right = IntStream.rangeClosed(input / 2 + 1, input).boxed().collect(Collectors.toCollection(ArrayDeque::new));
 
         while (left.size() + right.size() > 1) {
             if (left.size() > right.size()) {
                 left.removeLast();
             } else {
-                right.removeLast();
+                right.removeFirst();
             }
-            right.addFirst(left.removeFirst());
-            left.addLast(right.removeLast());
+            right.addLast(left.removeFirst());
+            left.addLast(right.removeFirst());
         }
 
         List<Integer> result = new ArrayList<>();
