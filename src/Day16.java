@@ -2,7 +2,7 @@ import lib.InputUtil;
 
 import java.io.IOException;
 
-public class Data16 {
+public class Day16 {
     public static void main(String[] args) throws IOException {
         String input = InputUtil.readAsString("input16.txt");
         run(input, 272);
