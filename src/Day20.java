@@ -10,10 +10,23 @@ public class Day20 {
                 .map(Interval::new)
                 .collect(Collectors.toList());
         first(intervals);
+        second(intervals);
     }
 
     private static void first(List<Interval> intervals) {
         long result = firstUnblocked(intervals, 0L);
+        System.out.println(result);
+    }
+
+    private static void second(List<Interval> intervals) {
+        long result = 0L;
+        long current = 0L;
+        while (current < 4294967296L) {
+            long start = firstUnblocked(intervals, current);
+            long end = firstBlocked(intervals, start);
+            result += (end - start);
+            current = end;
+        }
         System.out.println(result);
     }
 
@@ -30,6 +43,16 @@ public class Day20 {
             }
         } while (change);
         return x;
+    }
+
+    private static long firstBlocked(List<Interval> intervals, long input) {
+        long result = 4294967296L;
+        for (Interval interval : intervals) {
+            if (interval.start > input) {
+                result = Math.min(result, interval.start);
+            }
+        }
+        return result;
     }
 
     static class Interval {
